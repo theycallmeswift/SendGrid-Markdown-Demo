@@ -18,5 +18,9 @@
     "socket.io": "0.9.3"
   },
   "devDependencies": {},
-  "optionalDependencies": {}
+  "optionalDependencies": {},
+  "subdomain": "sendgrid-markdown-demo",
+  "scripts": {
+    "start": "server.js"
+  }
 }

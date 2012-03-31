@@ -6,6 +6,12 @@ simple static file server and websockets, this demo takes emails written in
 [Markdown](http://daringfireball.net/projects/markdown/syntax) and sends them
 using the SendGrid mail API in real time.
 
+## Demo
+
+Check out the live demo here:
+
+[http://sendgrid-markdown-demo.jit.su/](http://sendgrid-markdown-demo.jit.su/)
+
 ## Install && Setup
 
 This guide assumes you already have node and npm installed. If not, you should
@@ -34,3 +40,12 @@ Open up `config.json` in your favorite editor and fillout the settings.
 ### Step 4: Run locally
 
     node server.js
+
+## Deploying
+
+### Nodejitsu
+
+If you already have the [jitsu](https://github.com/nodejitsu/jitsu) package
+installed, then it's as simple as:
+
+   jitsu deploy
