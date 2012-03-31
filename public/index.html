@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SendGrid Markdown Demo</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span12">
+          <h1>Markdown Email</h1>
+        </div>
+      </div>
+      <div class="row">
+        <p class="span12">Send your email in <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> using <a href="http://www.nodejs.org/">Node.js</a> and <a href="http://sendgrid.com/">SendGrid</a>.</p>
+      </div>
+      <hr />
+      <div class="row" id="alerts"></div>
+      <div class="row">
+        <div class="span12">
+          <form class="form-horizontal" id="mail-form">
+            <div class="control-group">
+              <label class="control-label" for="to">To</label>
+              <div class="controls">
+                <input type="text" class="input-xlarge span10" id="to" name="to">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="subject">Subject</label>
+              <div class="controls">
+                <input type="text" class="input-xlarge span10" id="subject" name="subject">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="body">Message</label>
+              <div class="controls">
+                <div class="tabbable">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#compose" data-toggle="tab">Compose</a></li>
+                    <li><a href="#preview" data-toggle="tab">Preview</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="compose">
+                      <textarea class="input-xlarge span10" id="body" name="body" rows="10"></textarea>
+                    </div>
+                    <div class="tab-pane" id="preview">
+                      <img src="/img/loading.gif" id="preview-spinner" class="offset3" />
+                      <div id='markup-container' class='well'></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" id="submit" class="btn btn-primary pull-right">Send</button>
+            </div>
+          </form>
+          <img src="/img/loading.gif" id="mail-spinner" class="offset5" style="display: none" />
+        </div>
+      </div>
+      <hr />
+      <footer class='row'>
+        <p class="span12">Composed by <a href="http://theycallmeswift.com/">Swift</a>. Powered by <a href="http://sendgrid.com" title="Email Delivery. Simplified.">SendGrid</a>.</p>
+      </footer>
+    </div>
+
+    <!-- Fork me !--->
+    <a href="https://github.com/theycallmeswift/SendGrid-Markdown-Demo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
+    <!-- Fork me !--->
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      $(document).ready(function() {
+          var displayAlert
+            , mailForm = $('#mail-form')
+            , mailSpinner = $('#mail-spinner')
+            , markdownContainer = $('#markup-container')
+            , previewSpinner = $('#preview-spinner')
+            , reset
+            , socket = io.connect('/');
+
+        socket.on('render', function(previewHTML) {
+          previewSpinner.hide();
+          markdownContainer.html(previewHTML);
+        });
+
+        displayAlert = function(message, type) {
+          var alertsContainer = $('#alerts');
+          alertsContainer.append('<div class="alert alert-' + type + '"><a class="close" data-dismiss="alert">×</a>' + message + '</div>');
+        };
+
+        reset = function() {
+          $('#to').val('');
+          $('#subject').val('');
+          $('#compose textarea').val('');
+          return true;
+        };
+
+        socket.on('success', function(message) {
+          reset();
+          displayAlert(message, 'success');
+          mailSpinner.hide();
+          mailForm.show();
+        });
+
+        socket.on('error', function(message) {
+          displayAlert(message, 'error');
+          mailSpinner.hide();
+          mailForm.show();
+        });
+
+        $('#submit').click(function(event) {
+          var to = $('#to').val()
+            , subject = $('#subject').val()
+            , body = $('#compose textarea').val();
+
+          event.preventDefault();
+          socket.emit('send', to, subject, body);
+          mailForm.hide();
+          mailSpinner.show();
+        });
+
+        $('.tabbable').bind('shown', function(event) {
+          var target = $(event.target)
+            , mailBody = $('#compose textarea').val();
+
+          if(target.attr('href') == '#preview') {
+            markdownContainer.html('');
+            previewSpinner.show();
+            socket.emit('preview', mailBody);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

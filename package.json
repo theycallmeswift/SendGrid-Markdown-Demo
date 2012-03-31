@@ -1,0 +1,21 @@
+{
+  "author": "Mike Swift <theycallmeswift@gmail.com> (http://theycallmeswift.com/)",
+  "name": "markdown-email",
+  "description": "A demo of using the Sendgrid API with markdown support.",
+  "version": "0.0.0",
+  "repository": {
+    "url": ""
+  },
+  "engines": {
+    "node": "~0.6.9"
+  },
+  "dependencies": {
+    "coffee-script": "1.2.0",
+    "express": "2.5.8",
+    "marked": "0.2.3",
+    "sendgrid-nodejs": "0.1.0-2",
+    "socket.io": "0.9.3"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {}
+}
