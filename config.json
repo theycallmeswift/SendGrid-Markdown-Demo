@@ -1,0 +1,5 @@
+{
+  "fromAddress": "MarkdownDemo@sendgrid.com",
+  "username": "your_sendgrid_username",
+  "key": "your_sendgrid_key"
+}

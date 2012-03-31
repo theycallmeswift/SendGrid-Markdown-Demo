@@ -1,10 +1,5 @@
 # Dependencies
 
-## SendGrid Keys
-user = process.env.SENDGRID_USER || "your_sendgrid_username"
-key = process.env.SENDGRID_KEY || "your_sendgrid_password"
-from = "MarkdownDemo@sendgrid.com"
-
 ## External
 express = require 'express'
 marked = require 'marked'
@@ -13,6 +8,15 @@ marked = require 'marked'
 ## Native
 path = require 'path'
 util = require 'util'
+
+## SendGrid Keys
+config = require path.join('..', 'config')
+
+user = process.env.SENDGRID_USER || config.username
+key = process.env.SENDGRID_KEY || config.key
+from = process.env.SENDGRID_FROM || config.fromAddress
+
+console.log user, key, from
 
 # Initialization
 app = module.exports = express.createServer()
