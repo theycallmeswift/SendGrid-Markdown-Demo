@@ -2,7 +2,7 @@
   "author": "Mike Swift <theycallmeswift@gmail.com> (http://theycallmeswift.com/)",
   "name": "sendgrid-markdown-demo",
   "description": "A demo of using the Sendgrid API with markdown support.",
-  "version": "0.0.1",
+  "version": "0.0.1-1",
   "repository": {
     "type": "git",
     "url": "git://github.com/theycallmeswift/SendGrid-Markdown-Demo.git"
